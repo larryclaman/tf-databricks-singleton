@@ -46,7 +46,10 @@ jobs:
 
     - name: Terraform init
       run: |      
-        terraform init -backend-config ${{env.backend-path}}
+        terraform init -backend-config ${{env.backend-path}} \
+          -backend-config tenant_id=${{ secrets.AZURE_TENANT_ID }} \
+          -backend-config client_id=${{ secrets.AZURE_CLIENT_ID }} \
+          -backend-config subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Terraform plan
       run: terraform plan -var=rg='${{env.RG}}'
