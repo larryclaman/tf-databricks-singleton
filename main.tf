@@ -2,22 +2,25 @@ terraform {
   required_providers {
     azurerm = "~> 2.33"
     random  = "~> 2.2"
-       databricks = {
+    databricks = {
       source = "databricks/databricks"
     }
   }
+
+  backend "azurerm" {
+  }
+
 }
 
 provider "azurerm" {
   features {}
+  skip_provider_registration = true
 }
 
 # Use Azure CLI authentication.
 provider "databricks" {
   host = local.databricks_host
 }
-
-
 
 
 variable "region" {

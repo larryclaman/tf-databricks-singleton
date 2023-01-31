@@ -37,5 +37,5 @@ resource "databricks_cluster" "this" {
 }
 
 output "cluster_url" {
- value = databricks_cluster.this.url
+  value = databricks_cluster.this.url
 }
