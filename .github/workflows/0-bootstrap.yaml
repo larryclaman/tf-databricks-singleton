@@ -46,6 +46,6 @@ jobs:
       # Create Storage Account
       - name: Create Storage Account
         run: |
-          az group create --name $RG --LOCATION $LOCATION
+          az group create --name $RG -l $LOCATION
           az storage account create -n $SA -g $RG -l $LOCATION --sku Standard_LRS
           az storage container create -n $CONTAINER --account-name $SA --auth-mode login
