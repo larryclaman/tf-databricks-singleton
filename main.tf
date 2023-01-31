@@ -1,6 +1,6 @@
 terraform {
   required_providers {
-    azurerm = "~> 2.33"
+    azurerm = "~> 3.7.0"
     random  = "~> 2.2"
     databricks = {
       source = "databricks/databricks"
@@ -14,6 +14,7 @@ terraform {
 
 provider "azurerm" {
   features {}
+  use_oidc = true
   skip_provider_registration = true
 }
 
