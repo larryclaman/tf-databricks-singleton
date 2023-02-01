@@ -15,13 +15,14 @@ terraform {
 
 provider "azurerm" {
   features {}
-  use_oidc = true
+  use_oidc                   = true
   skip_provider_registration = true
 }
 
 # Use Azure CLI authentication.
 provider "databricks" {
-  host = local.databricks_host
+  host                        = local.databricks_host
+  azure_workspace_resource_id = azurerm_databricks_workspace.this.id
 }
 
 
@@ -56,4 +57,5 @@ locals {
   }
 
   databricks_host = "https://${azurerm_databricks_workspace.this.workspace_url}/"
+
 }
