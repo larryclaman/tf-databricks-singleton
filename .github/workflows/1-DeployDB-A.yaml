@@ -52,7 +52,9 @@ jobs:
           -backend-config subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
     - name: Terraform plan
-      run: terraform plan -var=rg='${{env.RG}}'
+      run: |
+        az account get-access-token
+        terraform plan -var=rg='${{env.RG}}'
 
     - name: Terraform apply
       run: terraform apply -var=rg='${{env.RG}}' -auto-approve
