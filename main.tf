@@ -21,8 +21,8 @@ provider "azurerm" {
 
 # Use Azure CLI authentication.
 provider "databricks" {
-  host                        = local.databricks_host
-  azure_workspace_resource_id = azurerm_databricks_workspace.this.id
+  host                        = azurerm_databricks_workspace.this.workspace_url
+  // azure_workspace_resource_id = azurerm_databricks_workspace.this.id
 }
 
 
