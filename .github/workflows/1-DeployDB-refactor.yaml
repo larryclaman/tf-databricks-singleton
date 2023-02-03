@@ -55,6 +55,10 @@ jobs:
           az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
           az account list -o table
 
+
+    - run: az account list -o table
+    - run: ls -l .azure
+
           
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v2
