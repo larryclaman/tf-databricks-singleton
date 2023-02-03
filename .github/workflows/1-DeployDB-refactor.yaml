@@ -1,0 +1,81 @@
+name: '1 - Deploy DB to Azure Region A'
+
+on:
+  workflow_dispatch:
+
+env:
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  ARM_USE_OIDC: true
+  
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    environment: Production
+    env: 
+      backend-path: 'backendA.tfvars'
+      location: 'EastUS'
+      RG: "databricksdemo-A"
+
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+
+
+    - name: Install OIDC Client from Core Package
+      run: npm install @actions/core@1.6.0 @actions/http-client
+    - name: Get Id Token
+      uses: actions/github-script@v6
+      id: idtoken
+      with:
+        script: |
+          const coredemo = require('@actions/core')
+          let id_token = await coredemo.getIDToken('api://AzureADTokenExchange')  
+          coredemo.setOutput('id_token', id_token)
+
+
+    - name: Azure CLI script
+      uses: azure/CLI@v1
+      with:
+        # azcliversion: 2.30.0
+        inlineScript: |
+          echo "starting az login"
+          az login \
+            --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} \
+            -t ${{ secrets.AZURE_TENANT_ID }} \
+            --federated-token ${{ steps.idtoken.outputs.id_token }} 
+          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+          az account list -o table
+
+          
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: show env
+      run: |
+        echo "ACTIONS_ID_TOKEN_REQUEST_URL = $ACTIONS_ID_TOKEN_REQUEST_URL"
+        echo "ACTIONS_ID_TOKEN_REQUEST_TOKEN = $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+
+    - name: Terraform init
+      run: |      
+        terraform init -backend-config ${{env.backend-path}} \
+          -backend-config tenant_id=${{ secrets.AZURE_TENANT_ID }} \
+          -backend-config client_id=${{ secrets.AZURE_CLIENT_ID }} \
+          -backend-config subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Terraform plan
+      run: |
+        terraform plan -var=rg='${{env.RG}}'
+
+    - name: Terraform apply
+      run: terraform apply -var=rg='${{env.RG}}' -auto-approve
