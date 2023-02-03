@@ -58,6 +58,8 @@ jobs:
 
     - run: az account list -o table
     - run: |
+        pwd
+        ls -la ..
         ls -la 
         ls -ls .azure
 
