@@ -63,7 +63,7 @@ jobs:
           pwd
           echo 'ls -la:'
           ls -la
-          chmod o+r .azure/*
+          chmod o+rwx .azure/*
           echo 'ls -la .azure:'
           ls -la .azure
 
