@@ -54,7 +54,10 @@ jobs:
             --federated-token ${{ steps.idtoken.outputs.id_token }} 
           az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
           az account list -o table
-          chmod o+r /home/runner/.azure/*
+          pwd
+          cd
+          pwd
+          chmod o+r .azure/*
 
 
     - run: az account list -o table
