@@ -60,6 +60,7 @@ jobs:
     - run: |
         pwd
         ls -la /home/runner
+        ls -la /home/runner/.azure
         ls -la ..
         ls -la 
         #ls -ls .azure
