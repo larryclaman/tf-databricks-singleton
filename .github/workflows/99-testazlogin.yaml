@@ -55,9 +55,8 @@ jobs:
           az account list -o table
 
 
-    - run:  |
-        az account list -o table
-        ls -l .azure
+    - run: az account list -o table
+    - run: ls -l .azure
 
     # # Logs in with your Azure credentials
     # - name: Azure login
