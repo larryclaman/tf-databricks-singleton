@@ -64,6 +64,8 @@ jobs:
           echo 'ls -la:'
           ls -la
           chmod o+r .azure/*
+          echo 'ls -la .azure:'
+          ls -la .azure
 
 
     - run: az account list -o table
