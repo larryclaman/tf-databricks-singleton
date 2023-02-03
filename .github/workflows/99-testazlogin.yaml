@@ -47,7 +47,12 @@ jobs:
         # azcliversion: 2.30.0
         inlineScript: |
           az account list
-          az login --federated-token ${{ steps.idtoken.outputs.id_token }}
+          echo "starting az login"
+          az login \
+            --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} \
+            -t ${{ secrets.AZURE_TENANT_ID }} \
+            --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
+            --federated-token ${{ steps.idtoken.outputs.id_token }} 
           az account list
 
 
