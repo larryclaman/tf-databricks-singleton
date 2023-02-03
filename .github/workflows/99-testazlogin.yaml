@@ -46,17 +46,16 @@ jobs:
       with:
         # azcliversion: 2.30.0
         inlineScript: |
-          az account list
           echo "starting az login"
           az login \
             --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} \
             -t ${{ secrets.AZURE_TENANT_ID }} \
-            --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
             --federated-token ${{ steps.idtoken.outputs.id_token }} 
-          az account list
+          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+          az account list -o table
 
 
-    - run:  az account list
+    - run:  az account list -o table
 
     # # Logs in with your Azure credentials
     # - name: Azure login
