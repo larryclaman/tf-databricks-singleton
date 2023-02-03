@@ -59,9 +59,10 @@ jobs:
     - run: az account list -o table
     - run: |
         pwd
+        ls -la /home/runner
         ls -la ..
         ls -la 
-        ls -ls .azure
+        #ls -ls .azure
 
           
     - name: Set up Terraform
