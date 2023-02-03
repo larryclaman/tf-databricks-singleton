@@ -1,4 +1,4 @@
-name: '1 - Deploy DB to Azure Region A'
+name: '1 - Deploy DB to Azure Region A with cli login'
 
 on:
   workflow_dispatch:
