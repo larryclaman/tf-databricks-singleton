@@ -54,6 +54,7 @@ jobs:
             --federated-token ${{ steps.idtoken.outputs.id_token }} 
           az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
           az account list -o table
+    - run: chown runner.docker /home/runner/.azure/*
 
 
     - run: az account list -o table
